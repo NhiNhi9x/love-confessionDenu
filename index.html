@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Confession 💖</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at center, #ffb6c1, #ff69b4, #ff1493);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  #login-screen, #quiz-screen, #heart-screen {
+    display: none;
+  }
+
+  #login-screen.active, #quiz-screen.active, #heart-screen.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  input {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #ff1493;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #ff69b4;
+  }
+
+  #heart {
+    font-size: 80px;
+    animation: beat 1s infinite alternate;
+    filter: drop-shadow(0 0 20px pink);
+  }
+
+  @keyframes beat {
+    to {
+      transform: scale(1.2);
+    }
+  }
+
+  #message {
+    width: 80%;
+    margin-top: 30px;
+    font-size: 18px;
+    line-height: 1.6em;
+    white-space: pre-wrap;
+    text-shadow: 0 0 10px #fff;
+  }
+
+  #yes-btn, #no-btn {
+    display: none;
+    margin: 20px;
+    padding: 10px 30px;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen" class="active">
+  <h2>💌 Love Login 💌</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button id="login-btn">Login</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen">
+  <h2 id="question-text"></h2>
+  <input type="text" id="answer" placeholder="Your answer here">
+  <button id="submit-btn">Submit</button>
+</div>
+
+<!-- HEART -->
+<div id="heart-screen">
+  <div id="heart">💖</div>
+  <div id="message"></div>
+  <button id="yes-btn">Yes, I agree ❤️</button>
+  <button id="no-btn">No, I refuse 💔</button>
+</div>
+
+<script>
+  const loginScreen = document.getElementById("login-screen");
+  const quizScreen = document.getElementById("quiz-screen");
+  const heartScreen = document.getElementById("heart-screen");
+
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const loginBtn = document.getElementById("login-btn");
+
+  const questionText = document.getElementById("question-text");
+  const answerInput = document.getElementById("answer");
+  const submitBtn = document.getElementById("submit-btn");
+
+  const heart = document.getElementById("heart");
+  const message = document.getElementById("message");
+  const yesBtn = document.getElementById("yes-btn");
+  const noBtn = document.getElementById("no-btn");
+
+  const questions = [
+    { q: "When was the first day we talked?", a: "12/06/2024" },
+    { q: "When was the official day we met?", a: "13/10/2024" },
+    { q: "How many times have we met?", a: "5" }
+  ];
+
+  let currentQuestion = 0;
+
+  // LOGIN CHECK
+  loginBtn.addEventListener("click", () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    if (username === "jenudenu" && password === "1310") {
+      loginScreen.classList.remove("active");
+      quizScreen.classList.add("active");
+      showQuestion();
+    } else {
+      alert("Wrong username or password!");
+    }
+  });
+
+  function showQuestion() {
+    if (currentQuestion < questions.length) {
+      questionText.textContent = questions[currentQuestion].q;
+      answerInput.value = "";
+    } else {
+      quizScreen.classList.remove("active");
+      showHeart();
+    }
+  }
+
+  submitBtn.addEventListener("click", () => {
+    const answer = answerInput.value.trim();
+    if (answer.toLowerCase() === questions[currentQuestion].a.toLowerCase()) {
+      currentQuestion++;
+      showQuestion();
+    } else {
+      alert("Wrong answer 💔");
+      location.reload();
+    }
+  });
+
+  function showHeart() {
+    heartScreen.classList.add("active");
+    const audio = new Audio("https://p.scdn.co/mp3-preview/cc8f4cba62ed44b67d6b1ce94d47b5de9cb70a05?cid=774b29d4f13844c495f206cafdad9c86");
+    audio.play();
+
+    const text = `I love you Denu, I want to confess to you today and this is the only time in my life I will confess to a man.
+You appeared and brought me so much joy in life.
+I fell in love with you through your gestures and care, through your sincerity and mutual understanding, from the very first look and the moments we were together.
+All of it just made me love you more and unable to be apart from you, even when we argued and drifted away.
+I can no longer hide my feelings — I want to say that I love you.
+Will you be my boyfriend?`;
+
+    let i = 0;
+    const speed = 70;
+    function typeWriter() {
+      if (i < text.length) {
+        message.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      } else {
+        yesBtn.style.display = "inline-block";
+        noBtn.style.display = "inline-block";
+      }
+    }
+    typeWriter();
+  }
+
+  yesBtn.addEventListener("click", () => {
+    heart.innerHTML = "🎆💖🎇";
+    message.textContent = "Today, October 08, 2025, we are back together. Jena ❤️ Denu forever!";
+  });
+
+  noBtn.addEventListener("click", () => {
+    heart.innerHTML = "😭💔🌧️";
+    message.textContent = "Thank you for being with me through this journey. Goodbye.";
+  });
+</script>
+</body>
+</html>
